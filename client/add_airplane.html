@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Airplane</title>
+  <style>
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      max-width: 600px;
+      margin: 2rem auto;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 1em;
+    }
+    button {
+      grid-column: span 2;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align: center">Add Airplane</h2>
+
+  <form id="airplaneForm">
+    <input name="airlineId" placeholder="Airline ID" required />
+    <input name="tailNum" placeholder="Tail Number" required />
+    <input name="seatCap" type="number" placeholder="Seat Capacity" required />
+    <input name="speed" type="number" placeholder="Speed" required />
+    <input name="locationId" placeholder="Location ID" required />
+    <input name="planeType" placeholder="Plane Type (Boeing/Airbus)" required />
+    <input name="maintained" placeholder="Maintained (true/false or leave blank)" />
+    <input name="model" placeholder="Model (optional)" />
+    <input name="neo" placeholder="Neo (true/false)" />
+    <button type="submit">Add Airplane</button>
+  </form>
+
+  <script>
+    document.getElementById("airplaneForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = {};
+
+      formData.forEach((value, key) => {
+        data[key] = value.replace(/^['"]+|['"]+$/g, "").trim();
+      });
+
+      // Convert to correct types
+      data.seatCap = parseInt(data.seatCap);
+      data.speed = parseInt(data.speed);
+      data.maintained = data.maintained === "" ? null : data.maintained === "true";
+      data.model = data.model === "" ? null : data.model;
+      data.neo = data.neo === "true";
+
+      console.log("🔼 Cleaned data to send:", data);
+
+      try {
+        const response = await fetch("/add-airplane", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        console.log("✅ Server response:", result);
+        alert(result.message || result.error);
+      } catch (err) {
+        console.error("❌ Request failed:", err);
+        alert("Failed to send data to server.");
+      }
+    });
+  </script>
+</body>
+</html>
