@@ -1,0 +1,19 @@
+/* styles.css */
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 600px;
+    margin: 2rem auto;
+  }
+  input, button {
+    padding: 10px;
+    font-size: 1em;
+  }
+  button {
+    grid-column: span 2;
+  }
+  h2 {
+    text-align: center;
+  }
+  
