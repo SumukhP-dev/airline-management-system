@@ -37,7 +37,7 @@ function NavigationRow() {
                         <Link className= "nav-link" to = "/flighs_in_the_air"> Flights in the Air</Link>
                     </li>
                     <li className = "nav-item">
-                        <Link className= "nav-link" to = "/flighs_on_the_ground"> Flights in the Air</Link>
+                        <Link className= "nav-link" to = "/flighs_on_the_ground"> Flights on the Ground</Link>
                     </li>
                 </ul>
             </div>
