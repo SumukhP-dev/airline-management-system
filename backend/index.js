@@ -251,11 +251,8 @@ app.get("/flights_in_the_air", (req, res) => {
         data[i].airplane_list,
       ]);
     }
-<<<<<<< Updated upstream
  
-=======
 
->>>>>>> Stashed changes
     res.json({result});
     //return result;
   });
@@ -265,9 +262,10 @@ app.get("/flights_on_the_ground", (req, res) => {
   const query = "select * from flights_on_the_ground";
 
   db.query(query, (error, data) => {
-    if (error)
-      return res.status(500).json({ message: "Flights in the ground failure" });
-    res.status(200).json({ message: "Flights in the ground success" });
+    if (error) {
+      return res.status(500).json({ message: error.message });
+      //res.status(200).json({ message: "Flights in the air success" });
+    }
 
     let result = [];
 
@@ -282,7 +280,8 @@ app.get("/flights_on_the_ground", (req, res) => {
       ]);
     }
 
-    return result;
+    res.json({result});
+    //return result;
   });
 });
 
