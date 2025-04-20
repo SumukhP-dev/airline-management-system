@@ -232,13 +232,14 @@ app.post("/simulation_cycle", (req, res) => {
 
 app.get("/flights_in_the_air", (req, res) => {
   const query = "select * from flights_in_the_air";
-
+ 
   db.query(query, (error, data) => {
-    if (error) return res.status(500).json({ message: error.message });
-    res.status(200).json({ message: "Flights in the air success" });
-
+    if (error) {
+      return res.status(500).json({ message: error.message });
+      //res.status(200).json({ message: "Flights in the air success" });
+    }
     let result = [];
-
+ 
     for (let i = 0; i < data.length; i++) {
       result.push([
         data[i].departing_from,
@@ -250,8 +251,9 @@ app.get("/flights_in_the_air", (req, res) => {
         data[i].airplane_list,
       ]);
     }
-
-    return result;
+ 
+    res.json({result});
+    //return result;
   });
 });
 

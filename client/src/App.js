@@ -7,6 +7,7 @@ import Add_Airport from './components/Add_Airport';
 import Add_Person from './components/Add_Person';
 import Grant_Or_Revoke_Pilot_License from './components/Grant_Or_Revoke_Pilot_License';
 import Offer_Flight from './components/Offer_Flight';
+import Flights_In_Air from './components/Flights_In_Air';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path ="/add_person" element = {<Add_Person />}/>
           <Route path ="/grant-or-revoke-pilot-license" element = {<Grant_Or_Revoke_Pilot_License />}/>
           <Route path ="/offer-flight" element = {<Offer_Flight />}/>
+          <Route path ="/flights-in-air" element = {<Flights_In_Air />}/>
         </Routes>
       </div>
     </Router>
