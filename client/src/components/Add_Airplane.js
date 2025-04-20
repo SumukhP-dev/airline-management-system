@@ -2,199 +2,198 @@ import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 function Add_Airplane() {
-    const[airlineID, set_airlineID] = useState('');
-    const[tail_num, set_tail_num] = useState('');
-    const[seat_capacity, set_seat_capacity] = useState('');
-    const[speed, set_speed] = useState('');
-    const[locationID, set_locationID] = useState('');
-    const[plane_type, set_plane_type] = useState('');
-    const[maintenanced, set_maintenanced] = useState(false);
-    const[model, set_model] = useState('');
-    const[neo, set_neo] = useState(false);
+    const[airlineId, setAirlineId] = useState('');
+    const[tailNum, setTailNum] = useState('');
+    const[seatCap, setSeatCap] = useState('');
+    const[speed, setSpeed] = useState('');
+    const[locationId, setLocationId] = useState('');
+    const[planeType, setPlaneType] = useState('');
+    const[maintained, setMaintained] = useState(false);
+    const[model, setModel] = useState('');
+    const[neo, setNeo] = useState(false);
 
-    const[error, set_error] = useState(null);
+    const[error, setError] = useState(null);
 
-    const SubmitHandler = async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        setError(null);
 
         try {
-            const getData = await fetch('http://localhost:8800/add_airplane', {
+            const response = await fetch('http://localhost:8800/add-airplane', {
                 method: 'POST',
-                headers: {'type' : 'application/json'},
-                body: JSON.stringify ({
-                    ip_airlineID: airlineID,
-                    ip_tail_num: tail_num,
-                    ip_seat_capacity : seat_capacity,
-                    ip_speed: speed,
-                    ip_locationID : locationID,
-                    ip_plane_type: plane_type,
-                    ip_maintenanced: maintenanced === 'true', //convert to bool
-                    ip_model: model,
-                    ip_neo: neo  === 'true',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    airlineId,
+                    tailNum,
+                    seatCap: parseInt(seatCap),
+                    speed: parseInt(speed),
+                    locationId,
+                    planeType,
+                    maintained,
+                    model,
+                    neo
                 }),
             });
 
-            if (!(getData.ok)) {
-                const errData = await getData.json();
-                throw new Error("Airplane cannot be added");
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to add airplane');
             }
 
-            alert("Airplane added!")
-
+            alert("Airplane added successfully!");
             clearFields();
-
+        } catch (error) {
+            setError(error.message);
         }
-
-        catch (error){
-            set_error(error.message)
-        }
-
-        
     };
 
-    const clearFields = () =>{
-        set_airlineID('');
-        set_tail_num('');
-        set_seat_capacity('');
-        set_speed('');
-        set_locationID('');
-        set_plane_type('');
-        set_maintenanced('false');
-        set_model('');
-        set_neo('false');
-
-        set_error(null);
-    }
-
-    const CancelHandler = () => {
-        clearFields();
-    }
+    const clearFields = () => {
+        setAirlineId('');
+        setTailNum('');
+        setSeatCap('');
+        setSpeed('');
+        setLocationId('');
+        setPlaneType('');
+        setMaintained(false);
+        setModel('');
+        setNeo(false);
+    };
 
     return(
-        <div>
+        <div className="container mt-4">
             <h1>Add Airplane</h1>
-            {error && <p className="error">{error}</p>}
+            {error && <div className="alert alert-danger">{error}</div>}
 
-            <form onSubmit={SubmitHandler}>
-
-                {/*AIRLINE ID*/}
-                <div className = "form-group">
-                    <label htmlFor = "airlineId"> Airline ID</label>
-                    <input type="text"
-                        className = "form-control"
+            <form onSubmit={handleSubmit}>
+                <div className="form-group mb-3">
+                    <label htmlFor="airlineId">Airline ID</label>
+                    <input
+                        type="text"
+                        className="form-control"
                         id="airlineId"
-                        value = {airlineID}
-                        onChange = {(e) => set_airlineID(e.target.value)}
+                        value={airlineId}
+                        onChange={(e) => setAirlineId(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*TAIL NUM*/}
-                <div className = "form-group">
-                    <label htmlFor = "tailNum"> Tail Num</label>
-                    <input type="text"
-                        className = "form-control"
+                <div className="form-group mb-3">
+                    <label htmlFor="tailNum">Tail Number</label>
+                    <input
+                        type="text"
+                        className="form-control"
                         id="tailNum"
-                        value = {tail_num}
-                        onChange = {(e) => set_tail_num(e.target.value)}
+                        value={tailNum}
+                        onChange={(e) => setTailNum(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*SEAT CAPACITY*/}
-                <div className = "form-group">
-                    <label htmlFor = "seatCap"> Seat Cap</label>
-                    <input type="text"
-                        className = "form-control"
+                <div className="form-group mb-3">
+                    <label htmlFor="seatCap">Seat Capacity</label>
+                    <input
+                        type="number"
+                        className="form-control"
                         id="seatCap"
-                        value = {seat_capacity}
-                        onChange = {(e) => set_seat_capacity(e.target.value)}
+                        value={seatCap}
+                        onChange={(e) => setSeatCap(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*SPEED*/}
-                <div className = "form-group">
-                    <label htmlFor = "speed"> Speed</label>
-                    <input type="text"
-                        className = "form-control"
+                <div className="form-group mb-3">
+                    <label htmlFor="speed">Speed</label>
+                    <input
+                        type="number"
+                        className="form-control"
                         id="speed"
-                        value = {speed}
-                        onChange = {(e) => set_speed(e.target.value)}
+                        value={speed}
+                        onChange={(e) => setSpeed(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*LOCATION ID*/}
-                <div className = "form-group">
-                    <label htmlFor = "locationId"> Location ID</label>
-                    <input type="text"
-                        className = "form-control"
+                <div className="form-group mb-3">
+                    <label htmlFor="locationId">Location ID</label>
+                    <input
+                        type="text"
+                        className="form-control"
                         id="locationId"
-                        value = {locationID}
-                        onChange = {(e) => set_locationID(e.target.value)}
+                        value={locationId}
+                        onChange={(e) => setLocationId(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*PLANE TYPE*/}
-                <div className = "form-group">
-                    <label htmlFor = "planeType"> Plane Type</label>
-                    <input type="text"
-                        className = "form-control"
+                <div className="form-group mb-3">
+                    <label htmlFor="planeType">Plane Type</label>
+                    <input
+                        type="text"
+                        className="form-control"
                         id="planeType"
-                        value = {plane_type}
-                        onChange = {(e) => set_plane_type(e.target.value)}
+                        value={planeType}
+                        onChange={(e) => setPlaneType(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*MAINTENANCED*/}
-                <div className = "form-group">
-                    <label htmlFor = "maintenanced"> Maintenanced</label>
-                    <input type="text"
-                        className = "form-control"
-                        id="maintenanced"
-                        value = {maintenanced}
-                        onChange = {(e) => set_maintenanced(e.target.value)}
-                    />
+                <div className="form-group mb-3">
+                    <label htmlFor="maintained">Maintained</label>
+                    <select
+                        className="form-control"
+                        id="maintained"
+                        value={maintained}
+                        onChange={(e) => setMaintained(e.target.value === 'true')}
+                        required
+                    >
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
                 </div>
 
-                {/*MODEL*/}
-                <div className = "form-group">
-                    <label htmlFor = "model"> Model</label>
-                    <input type="text"
-                        className = "form-control"
+                <div className="form-group mb-3">
+                    <label htmlFor="model">Model</label>
+                    <input
+                        type="text"
+                        className="form-control"
                         id="model"
-                        value = {model}
-                        onChange = {(e) => set_model(e.target.value)}
+                        value={model}
+                        onChange={(e) => setModel(e.target.value)}
                     />
                 </div>
 
-                {/*NEO*/}
-                <div className = "form-group">
-                    <label htmlFor = "neo"> Neo</label>
-                    <input type="text"
-                        className = "form-control"
+                <div className="form-group mb-3">
+                    <label htmlFor="neo">NEO</label>
+                    <select
+                        className="form-control"
                         id="neo"
-                        value = {neo}
-                        onChange = {(e) => set_neo(e.target.value)}
-                    />
+                        value={neo}
+                        onChange={(e) => setNeo(e.target.value === 'true')}
+                        required
+                    >
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
                 </div>
 
-                {/*SUBMIT*/}
-                <button type = "submit" className = "btn btn-primary">
-                    Add
-                </button>
-
-                {/*CANCEL*/}
-                <button type = "button" className = "btn btn-secondary"
-                    onClick={CancelHandler}>
-
-                    Cancel
-                </button>
-
+                <div className="mt-3">
+                    <button type="submit" className="btn btn-primary me-2">
+                        Add Airplane
+                    </button>
+                    <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={clearFields}
+                    >
+                        Cancel
+                    </button>
+                </div>
             </form>
-
         </div>
-    )
-
+    );
 }
-
-
 
 export default Add_Airplane;

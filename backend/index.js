@@ -3,11 +3,15 @@ import mysql from "mysql";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import cors from "cors";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+
+// Add CORS support
+app.use(cors());
 
 const db = mysql.createConnection({
   host: "localhost",
@@ -16,7 +20,8 @@ const db = mysql.createConnection({
   database: "flight_tracking",
 });
 
-app.use(express.static(path.join(__dirname, "../client")));
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "../client/build")));
 app.use(express.json());
 
 app.post("/add-airplane", (req, res) => {
@@ -130,39 +135,6 @@ app.get("/airport", (request, res) => {
   });
 });
 
-// app.get("/flights", (req, res) => {
-//     const q = "SELECT * FROM flight";
-//     db.query(q, (error, data) => {
-//         if (error) {
-//             return res.json(error);
-//         } else {
-//             return res.json(data);
-//         }
-//     });
-// });
-
-// sample response from get for routes summary
-// [
-//   RowDataPacket {
-//     route: 'americas_hub_exchange',
-//     num_legs: 1,
-//     leg_sequence: 'leg_4',
-//     route_length: 600,
-//     num_flights: 1,
-//     flight_list: 'aa_12',
-//     airport_sequence: 'ATL->ORD'
-//   },
-//   RowDataPacket {
-//     route: 'americas_one',
-//     num_legs: 2,
-//     leg_sequence: 'leg_2,leg_1',
-//     route_length: 4300,
-//     num_flights: 1,
-//     flight_list: 'dl_10',
-//     airport_sequence: 'ATL->AMS,AMS->BER'
-//   }
-// ]
-
 app.post("/assign_pilot", (req, res) => {
   const { ip_flightID, ip_personID } = req.body;
   const query = "CALL assign_pilot(?, ?)";
@@ -274,6 +246,11 @@ app.get("/alternative_airports", (req, res) => {
 
     return data;
   });
+});
+
+// Add catch-all route to serve React app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
 app.listen(8800, () => {

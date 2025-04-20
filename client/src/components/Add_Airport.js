@@ -2,157 +2,150 @@ import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 function Add_Airport() {
-    const[airportID, set_airportID] = useState('');
-    const[airport_name, set_airport_name] = useState('');
-    const[city, set_city] = useState('');
-    const[state, set_state] = useState('');
-    const[country, set_country] = useState('');
-    const[locationID, set_locationID] = useState('');
+    const[airportCode, setAirportCode] = useState('');
+    const[airportName, setAirportName] = useState('');
+    const[city, setCity] = useState('');
+    const[state, setState] = useState('');
+    const[country, setCountry] = useState('');
+    const[locationId, setLocationId] = useState('');
 
-    const[error, set_error] = useState(null);
+    const[error, setError] = useState(null);
 
-    const SubmitHandler = async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        setError(null);
 
         try {
-            const getData = await fetch('http://localhost:8800/add_airport', {
+            const response = await fetch('http://localhost:8800/add-airport', {
                 method: 'POST',
-                headers: {'type' : 'application/json'},
-                body: JSON.stringify ({
-                    ip_airportID: airportID,
-                    ip_airport_name: airport_name,
-                    ip_city : city,
-                    ip_state: state,
-                    ip_country : country,
-                    ip_locationID: locationID,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    airportCode,
+                    airportName,
+                    city,
+                    state,
+                    country,
+                    locationId
                 }),
             });
 
-            if (!(getData.ok)) {
-                const errData = await getData.json();
-                throw new Error("Airport cannot be added");
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to add airport');
             }
 
-            alert("Airport added!")
-
+            alert("Airport added successfully!");
             clearFields();
-
+        } catch (error) {
+            setError(error.message);
         }
-
-        catch (error){
-            set_error(error.message)
-        }
-
-        
     };
 
-    const clearFields = () =>{
-        set_airportID('');
-        set_airport_name('');
-        set_city('');
-        set_state('');
-        set_country('');
-        set_locationID('');
-
-        set_error(null);
-    }
-
-    const CancelHandler = () => {
-        clearFields();
-    }
+    const clearFields = () => {
+        setAirportCode('');
+        setAirportName('');
+        setCity('');
+        setState('');
+        setCountry('');
+        setLocationId('');
+    };
 
     return(
-        <div>
+        <div className="container mt-4">
             <h1>Add Airport</h1>
-            {error && <p className="error">{error}</p>}
+            {error && <div className="alert alert-danger">{error}</div>}
 
-            <form onSubmit={SubmitHandler}>
-
-                {/*AIRPORT ID*/}
-                <div className = "form-group">
-                    <label htmlFor = "airportID"> Airport ID</label>
-                    <input type="text"
-                        className = "form-control"
-                        id="airportID"
-                        value = {airportID}
-                        onChange = {(e) => set_airportID(e.target.value)}
+            <form onSubmit={handleSubmit}>
+                <div className="form-group mb-3">
+                    <label htmlFor="airportCode">Airport Code</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="airportCode"
+                        value={airportCode}
+                        onChange={(e) => setAirportCode(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*AIRPORT NAME*/}
-                <div className = "form-group">
-                    <label htmlFor = "airportName"> Airport Name</label>
-                    <input type="text"
-                        className = "form-control"
+                <div className="form-group mb-3">
+                    <label htmlFor="airportName">Airport Name</label>
+                    <input
+                        type="text"
+                        className="form-control"
                         id="airportName"
-                        value = {airport_name}
-                        onChange = {(e) => set_airport_name(e.target.value)}
+                        value={airportName}
+                        onChange={(e) => setAirportName(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*CITY*/}
-                <div className = "form-group">
-                    <label htmlFor = "city"> City</label>
-                    <input type="text"
-                        className = "form-control"
+                <div className="form-group mb-3">
+                    <label htmlFor="city">City</label>
+                    <input
+                        type="text"
+                        className="form-control"
                         id="city"
-                        value = {city}
-                        onChange = {(e) => set_city(e.target.value)}
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*STATE*/}
-                <div className = "form-group">
-                    <label htmlFor = "state"> State</label>
-                    <input type="text"
-                        className = "form-control"
+                <div className="form-group mb-3">
+                    <label htmlFor="state">State</label>
+                    <input
+                        type="text"
+                        className="form-control"
                         id="state"
-                        value = {state}
-                        onChange = {(e) => set_state(e.target.value)}
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*COUNTRY*/}
-                <div className = "form-group">
-                    <label htmlFor = "country"> Country</label>
-                    <input type="text"
-                        className = "form-control"
+                <div className="form-group mb-3">
+                    <label htmlFor="country">Country</label>
+                    <input
+                        type="text"
+                        className="form-control"
                         id="country"
-                        value = {country}
-                        onChange = {(e) => set_country(e.target.value)}
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*LOCATION ID*/}
-                <div className = "form-group">
-                    <label htmlFor = "locationID"> Location ID</label>
-                    <input type="text"
-                        className = "form-control"
-                        id="locationID"
-                        value = {locationID}
-                        onChange = {(e) => set_locationID(e.target.value)}
+                <div className="form-group mb-3">
+                    <label htmlFor="locationId">Location ID</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="locationId"
+                        value={locationId}
+                        onChange={(e) => setLocationId(e.target.value)}
+                        required
                     />
                 </div>
 
-                {/*SUBMIT*/}
-                <button type = "submit" className = "btn btn-primary">
-                    Add
-                </button>
-
-                {/*CANCEL*/}
-                <button type = "button" className = "btn btn-secondary"
-                    onClick={CancelHandler}>
-
-                    Cancel
-                </button>
-
+                <div className="mt-3">
+                    <button type="submit" className="btn btn-primary me-2">
+                        Add Airport
+                    </button>
+                    <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={clearFields}
+                    >
+                        Cancel
+                    </button>
+                </div>
             </form>
-
         </div>
-    )
-
+    );
 }
-
-
 
 export default Add_Airport;
