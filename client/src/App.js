@@ -34,6 +34,12 @@ function App() {
                   <Link to = "/add_airport" style = {{ textDecoration: "none"}}>
                     <button className="btn btn-primary btn-lg" >Add Airport</button>
                   </Link>
+                  <Link to = "/grant-or-revoke-pilot-license" style = {{ textDecoration: "none"}}>
+                    <button className="btn btn-primary btn-lg" >Grant or Revoke Pilot License</button>
+                  </Link>
+                  <Link to = "/offer-flight" style = {{ textDecoration: "none"}}>
+                    <button className="btn btn-primary btn-lg" >Offer Flight</button>
+                  </Link>
                   <Link to = "/add_person" style = {{ textDecoration: "none"}}>
                     <button className="btn btn-primary btn-lg" >Add Person</button>
                   </Link>
@@ -59,6 +65,8 @@ function App() {
 
           <Route path ="/add_airplane" element = {<Add_Airplane />}/>
           <Route path ="/add_airport" element = {<Add_Airport />}/>
+          <Route path ="/grant-or-revoke-pilot-license" element = {<Grant_Or_Revoke_Pilot_License />}/>
+          <Route path ="/offer-flight" element = {<Offer_Flight />}/>
           <Route path ="/add_person" element = {<Add_Person />}/>
           <Route path ="/flight_landing" element = {<Flight_Landing />}/>
           <Route path ="/flight_takeoff" element = {<Flight_Takeoff />}/>
