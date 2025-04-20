@@ -109,6 +109,25 @@ app.post("/add-airport", (req, res) => {
   });
 });
 
+app.post("/grant-or-revoke-pilot-license", (req, res) => {
+  const sanitize = {
+    str: (v) =>
+      typeof v === "string" ? v.trim().replace(/^['"]+|['"]+$/g, "") : null,
+  };
+
+  const { personId, license } = req.body;
+
+  const values = [sanitize.str(personId), sanitize.str(license)];
+
+  db.query("CALL grant_or_revoke_pilot_license(?, ?)", values, (err) => {
+    if (err) {
+      console.error("DB error:", err);
+      return res.status(500).json({ error: "Failed to add airplane" });
+    }
+    res.status(200).json({ message: "License granted/revoked successfully" });
+  });
+});
+
 app.get("/", (request, res) => {
   res.json("hello this is the backend!");
 });
