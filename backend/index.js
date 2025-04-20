@@ -180,11 +180,24 @@ app.get("/flights_in_the_air", (req, res) => {
   const query = "select * from flights_in_the_air";
 
   db.query(query, (error, data) => {
-    if (error)
-      return res.status(500).json({ message: "Flights in the air failure" });
+    if (error) return res.status(500).json({ message: error.message });
     res.status(200).json({ message: "Flights in the air success" });
 
-    return data;
+    let result = [];
+
+    for (let i = 0; i < data.length; i++) {
+      result.push([
+        data[i].departing_from,
+        data[i].arriving_at,
+        data[i].num_flights,
+        data[i].flight_list,
+        data[i].earliest_arrival,
+        data[i].latest_arrival,
+        data[i].airplane_list,
+      ]);
+    }
+
+    return result;
   });
 });
 
@@ -196,7 +209,20 @@ app.get("/flights_on_the_ground", (req, res) => {
       return res.status(500).json({ message: "Flights in the ground failure" });
     res.status(200).json({ message: "Flights in the ground success" });
 
-    return data;
+    let result = [];
+
+    for (let i = 0; i < data.length; i++) {
+      result.push([
+        data[i].departing_from,
+        data[i].num_flights,
+        data[i].flight_list,
+        data[i].earliest_arrival,
+        data[i].latest_arrival,
+        data[i].airplane_list,
+      ]);
+    }
+
+    return result;
   });
 });
 
@@ -208,7 +234,25 @@ app.get("/people_in_the_air", (req, res) => {
       return res.status(500).json({ message: "People in the ground failure" });
     res.status(200).json({ message: "People in the ground success" });
 
-    return data;
+    let result = [];
+
+    for (let i = 0; i < data.length; i++) {
+      result.push([
+        data[i].departing_from,
+        data[i].arriving_at,
+        data[i].num_airplanes,
+        data[i].airplane_list,
+        data[i].flight_list,
+        data[i].earliest_arrival,
+        data[i].latest_arrival,
+        data[i].num_pilots,
+        data[i].num_passengers,
+        data[i].joint_pilots_passengers,
+        data[i].persons_list,
+      ]);
+    }
+
+    return result;
   });
 });
 
@@ -220,7 +264,24 @@ app.get("/people_in_the_ground", (req, res) => {
       return res.status(500).json({ message: "People in the ground failure" });
     res.status(200).json({ message: "People in the ground success" });
 
-    return data;
+    let result = [];
+
+    for (let i = 0; i < data.length; i++) {
+      result.push([
+        data[i].departing_from,
+        data[i].Airport,
+        data[i].airport_name,
+        data[i].city,
+        data[i].state,
+        data[i].country,
+        data[i].num_pilots,
+        data[i].num_passengers,
+        data[i].joint_pilots_passengers,
+        data[i].person_list,
+      ]);
+    }
+
+    return result;
   });
 });
 
@@ -232,7 +293,21 @@ app.get("/route_summary", (req, res) => {
       return res.status(500).json({ message: "Route summary failure" });
     res.status(200).json({ message: "Route summary success" });
 
-    return data;
+    let result = [];
+
+    for (let i = 0; i < data.length; i++) {
+      result.push([
+        data[i].route,
+        data[i].num_legs,
+        data[i].leg_sequence,
+        data[i].route_length,
+        data[i].num_flights,
+        data[i].flight_list,
+        data[i].airport_sequence,
+      ]);
+    }
+
+    return result;
   });
 });
 
@@ -244,13 +319,21 @@ app.get("/alternative_airports", (req, res) => {
       return res.status(500).json({ message: "Alternative airports failure" });
     res.status(200).json({ message: "Alternative airports success" });
 
-    return data;
-  });
-});
+    let result = [];
 
-// Add catch-all route to serve React app
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+    for (let i = 0; i < data.length; i++) {
+      result.push([
+        data[i].city,
+        data[i].state,
+        data[i].country,
+        data[i].num_airports,
+        data[i].airport_code_list,
+        data[i].airport_names_list,
+      ]);
+    }
+
+    return result;
+  });
 });
 
 app.listen(8800, () => {
