@@ -5,6 +5,8 @@ import NavigationRow from './components/NavigationRow';
 import Add_Airplane from './components/Add_Airplane';
 import Add_Airport from './components/Add_Airport';
 import Add_Person from './components/Add_Person';
+import Grant_Or_Revoke_Pilot_License from './components/Grant_Or_Revoke_Pilot_License';
+import Offer_Flight from './components/Offer_Flight';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
           <Route path ="/add_airplane" element = {<Add_Airplane />}/>
           <Route path ="/add_airport" element = {<Add_Airport />}/>
           <Route path ="/add_person" element = {<Add_Person />}/>
+          <Route path ="/grant-or-revoke-pilot-license" element = {<Grant_Or_Revoke_Pilot_License />}/>
+          <Route path ="/offer-flight" element = {<Offer_Flight />}/>
         </Routes>
       </div>
     </Router>

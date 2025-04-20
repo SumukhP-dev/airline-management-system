@@ -16,6 +16,12 @@ function NavigationRow() {
                     <li className = "nav-item">
                         <Link className= "nav-link" to = "/add_person"> Add Person</Link>
                     </li>
+                    <li className = "nav-item">
+                        <Link className= "nav-link" to = "/grant-or-revoke-pilot-license"> Grant or Revoke Pilot License</Link>
+                    </li>
+                    <li className = "nav-item">
+                        <Link className= "nav-link" to = "/offer-flight"> Offer Flight</Link>
+                    </li>
                     {/* add functions as you go */}
                 </ul>
             </div>

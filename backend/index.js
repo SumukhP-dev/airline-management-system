@@ -16,7 +16,7 @@ app.use(cors());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "317931",
+  password: "1234",
   database: "flight_tracking",
 });
 
@@ -125,6 +125,41 @@ app.post("/grant-or-revoke-pilot-license", (req, res) => {
       return res.status(500).json({ error: "Failed to add airplane" });
     }
     res.status(200).json({ message: "License granted/revoked successfully" });
+  });
+});
+
+app.post("/offer-flight", (req, res) => {
+  const sanitize = {
+    str: (v) =>
+      typeof v === "string" ? v.trim().replace(/^['"]+|['"]+$/g, "") : null,
+    num: (v) => (isNaN(parseInt(v)) ? null : parseInt(v)),
+  };
+
+  const {
+    flightId,
+    routeId,
+    support_airline,
+    support_tail,
+    progress,
+    nextTime,
+    cost,
+  } = req.body;
+
+  const values = [
+    sanitize.str(flightId),
+    sanitize.str(routeId),
+    sanitize.str(support_airline),
+    sanitize.str(support_tail),
+    sanitize.num(progress),
+    nextTime,
+    sanitize.num(cost),
+  ];
+  db.query("CALL offer_flight(?, ?, ?, ?, ?, ?, ?)", values, (err) => {
+    if (err) {
+      console.error("DB error:", err);
+      return res.status(500).json({ error: "Failed to add flight" });
+    }
+    res.status(200).json({ message: "Flight added successfully" });
   });
 });
 
