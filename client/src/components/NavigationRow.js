@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 function NavigationRow() {
     return (
-        <nav className = "navbar navbar-expand-lg navbar-light bg-light">
+        <nav className = "navbar navbar-expand-lg navbar-light bg-light" style= {{display: 'flex', flexDirection: 'column'}}>
             <Link className= "navbar-brand" to ="/"> SAMS System </Link>
             <div className = "collapse navbar-collapse">
                 <ul className = "navbar-nav mr-auto">
@@ -26,6 +26,16 @@ function NavigationRow() {
                         <Link className= "nav-link" to = "/flights-in-air"> Flights in Air</Link>
                     </li>
                     {/* add functions as you go */}
+
+                    <li className = "nav-item">
+                        <Link className= "nav-link" to = "/flight_landing"> Flight Landing</Link>
+                    </li>
+                    <li className = "nav-item">
+                        <Link className= "nav-link" to = "/flight_takeoff"> Flight Takeoff</Link>
+                    </li>
+                    <li className = "nav-item">
+                        <Link className= "nav-link" to = "/flighs_in_the_Air"> Flights in the Air</Link>
+                    </li>
                 </ul>
             </div>
         </nav>

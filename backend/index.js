@@ -251,7 +251,11 @@ app.get("/flights_in_the_air", (req, res) => {
         data[i].airplane_list,
       ]);
     }
+<<<<<<< Updated upstream
  
+=======
+
+>>>>>>> Stashed changes
     res.json({result});
     //return result;
   });

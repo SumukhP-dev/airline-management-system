@@ -7,34 +7,37 @@ function Add_Person() {
     const[last_name, set_last_name] = useState('');
     const[locationID, set_locationID] = useState('');
     const[taxID, set_taxID] = useState('');
-    const[experience, set_experience] = useState(false);
+    const[experience, set_experience] = useState('');
     const[miles, set_miles] = useState('');
-    const[funds, set_funds] = useState(false);
+    const[funds, set_funds] = useState('');
 
-    const[error, set_error] = useState(null);
+    const[error, setError] = useState(null);
 
     const SubmitHandler = async (event) => {
         event.preventDefault();
+        setError(null);
 
         try {
             const getData = await fetch('http://localhost:8800/add_person', {
                 method: 'POST',
-                headers: {'type' : 'application/json'},
+                headers: {'Content-Type': 'application/json',},
                 body: JSON.stringify ({
-                    ip_personID: personID,
-                    ip_first_name: first_name,
-                    ip_last_name : last_name,
-                    ip_locationID : locationID,
-                    ip_taxID: taxID,
-                    ip_experience: experience === 'true', //convert to bool
-                    ip_miles: miles,
-                    ip_funds: funds  === 'true',
+                    personID,
+                    first_name,
+                    last_name,
+                    locationID,
+                    taxID,
+                    experience: parseInt(experience),
+                    miles: parseInt(miles),
+                    funds: parseInt(funds)
                 }),
             });
 
+            const errData = await getData.json();
             if (!(getData.ok)) {
-                const errData = await getData.json();
-                throw new Error("Person cannot be added");
+                // const errData = await getData.json();
+                // throw new Error("Person cannot be added");
+                throw new Error(errData.error || 'Failed to add airplane');
             }
 
             alert("Person added!")
@@ -44,7 +47,7 @@ function Add_Person() {
         }
 
         catch (error){
-            set_error(error.message)
+            setError(error.message)
         }
 
         
@@ -56,11 +59,11 @@ function Add_Person() {
         set_last_name('');
         set_locationID('');
         set_taxID('');
-        set_experience('false');
+        set_experience('');
         set_miles('');
-        set_funds('false');
+        set_funds('');
 
-        set_error(null);
+        setError(null);
     }
 
     const CancelHandler = () => {
@@ -68,14 +71,14 @@ function Add_Person() {
     }
 
     return(
-        <div>
+        <div className = "container mt-4">
             <h1>Add Person</h1>
             {error && <p className="error">{error}</p>}
 
             <form onSubmit={SubmitHandler}>
 
                 {/*PERSON ID*/}
-                <div className = "form-group">
+                <div className = "form-group mb-3">
                     <label htmlFor = "personID"> Person ID</label>
                     <input type="text"
                         className = "form-control"
@@ -86,7 +89,7 @@ function Add_Person() {
                 </div>
 
                 {/*FIRST NAME*/}
-                <div className = "form-group">
+                <div className = "form-group mb-3">
                     <label htmlFor = "firstName"> First Name</label>
                     <input type="text"
                         className = "form-control"
@@ -97,7 +100,7 @@ function Add_Person() {
                 </div>
 
                 {/*LAST NAME*/}
-                <div className = "form-group">
+                <div className = "form-group mb-3">
                     <label htmlFor = "lastName"> Last name</label>
                     <input type="text"
                         className = "form-control"
@@ -108,7 +111,7 @@ function Add_Person() {
                 </div>
 
                 {/*LOCATION ID*/}
-                <div className = "form-group">
+                <div className = "form-group mb-3">
                     <label htmlFor = "locationId"> Location ID</label>
                     <input type="text"
                         className = "form-control"
@@ -119,7 +122,7 @@ function Add_Person() {
                 </div>
 
                 {/*TAX ID*/}
-                <div className = "form-group">
+                <div className = "form-group mb-3">
                     <label htmlFor = "taxID"> Tax ID</label>
                     <input type="text"
                         className = "form-control"
@@ -130,7 +133,7 @@ function Add_Person() {
                 </div>
 
                 {/*EXPERIENCE*/}
-                <div className = "form-group">
+                <div className = "form-group mb-3">
                     <label htmlFor = "experience"> Experience</label>
                     <input type="text"
                         className = "form-control"
@@ -141,7 +144,7 @@ function Add_Person() {
                 </div>
 
                 {/*MILES*/}
-                <div className = "form-group">
+                <div className = "form-group mb-3">
                     <label htmlFor = "miles"> Miles</label>
                     <input type="text"
                         className = "form-control"
@@ -152,7 +155,7 @@ function Add_Person() {
                 </div>
 
                 {/*FUNDS*/}
-                <div className = "form-group">
+                <div className = "form-group mb-3">
                     <label htmlFor = "funds"> Funds</label>
                     <input type="text"
                         className = "form-control"
@@ -162,17 +165,18 @@ function Add_Person() {
                     />
                 </div>
 
-                {/*SUBMIT*/}
-                <button type = "submit" className = "btn btn-primary">
-                    Add
-                </button>
-
-                {/*CANCEL*/}
-                <button type = "button" className = "btn btn-secondary"
-                    onClick={CancelHandler}>
-
-                    Cancel
-                </button>
+                <div className="mt-3">
+                    <button type="submit" className="btn btn-primary me-2">
+                        Add Person
+                    </button>
+                    <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={CancelHandler}
+                    >
+                        Cancel
+                    </button>
+                </div>
 
             </form>
 
