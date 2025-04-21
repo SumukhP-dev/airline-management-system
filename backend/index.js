@@ -16,7 +16,7 @@ app.use(cors());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "1234",
+  password: "12345",
   database: "flight_tracking",
 });
 
@@ -232,14 +232,14 @@ app.post("/simulation_cycle", (req, res) => {
 
 app.get("/flights_in_the_air", (req, res) => {
   const query = "select * from flights_in_the_air";
- 
+
   db.query(query, (error, data) => {
     if (error) {
       return res.status(500).json({ message: error.message });
       //res.status(200).json({ message: "Flights in the air success" });
     }
     let result = [];
- 
+
     for (let i = 0; i < data.length; i++) {
       result.push([
         data[i].departing_from,
@@ -251,9 +251,8 @@ app.get("/flights_in_the_air", (req, res) => {
         data[i].airplane_list,
       ]);
     }
- 
 
-    res.json({result});
+    res.json({ result });
     //return result;
   });
 });
@@ -280,7 +279,7 @@ app.get("/flights_on_the_ground", (req, res) => {
       ]);
     }
 
-    res.json({result});
+    res.json({ result });
     //return result;
   });
 });
