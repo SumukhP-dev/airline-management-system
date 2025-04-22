@@ -16,7 +16,11 @@ app.use(cors());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
+<<<<<<< Updated upstream
   password: "12345",
+=======
+  password: "317931",
+>>>>>>> Stashed changes
   database: "flight_tracking",
 });
 
