@@ -16,6 +16,11 @@ import Recycle_Crew from "./components/Recycle_Crew";
 import Retire_Flight from "./components/Retire_Flight";
 import Simulation_Cycle from "./components/Simulation_Cycle";
 import Assign_Pilot from "./components/Assign_Pilot";
+import Passengers_Board from "./components/Passengers_Board";
+import Passengers_Disembark from "./components/Passengers_Disembark";
+import Route_Summary from "./components/Route_Summary";
+import Alternative_Airports from "./components/Alternative_Airports";
+import People_On_The_Ground from "./components/People_On_The_Ground";
 
 function App() {
   return (
@@ -113,6 +118,31 @@ function App() {
                       Assign Pilot
                     </button>
                   </Link>
+                  <Link to="/passengers_board" style={{ textDecoration: "none" }}>
+                    <button className="btn btn-primary btn-lg">
+                      Passengers Board
+                    </button>
+                  </Link>
+                  <Link to="/passengers_disembark" style={{ textDecoration: "none" }}>
+                    <button className="btn btn-primary btn-lg">
+                      Passengers Disembark
+                    </button>
+                    </Link>
+                    <Link to="/route_summary" style={{ textDecoration: "none" }}>
+                      <button className="btn btn-primary btn-lg">
+                        Route Summary
+                      </button>
+                    </Link>
+                    <Link to="/alternative_airports" style={{ textDecoration: "none" }}>
+                      <button className="btn btn-primary btn-lg">
+                        Alternative Airports
+                      </button>
+                    </Link>
+                    <Link to="/people_on_the_ground" style={{ textDecoration: "none" }}>
+                      <button className="btn btn-primary btn-lg">
+                        People on the Ground
+                      </button>
+                    </Link>
                 </div>
               </div>
             }
@@ -137,6 +167,11 @@ function App() {
           <Route path="/retire_flight" element={<Retire_Flight />} />
           <Route path="/assign_pilot" element={<Assign_Pilot />} />
           <Route path="/simulation_cycle" element={<Simulation_Cycle />} />
+          <Route path="/passengers_board" element={<Passengers_Board />} />
+          <Route path="/passengers_disembark" element={<Passengers_Disembark />} />
+          <Route path="/route_summary" element={<Route_Summary />} />
+          <Route path="/alternative_airports" element={<Alternative_Airports />} />
+          <Route path="/people_on_the_ground" element={<People_On_The_Ground />} />
         </Routes>
       </div>
     </Router>

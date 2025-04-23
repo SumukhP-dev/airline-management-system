@@ -16,11 +16,7 @@ app.use(cors());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-<<<<<<< Updated upstream
-  password: "12345",
-=======
   password: "317931",
->>>>>>> Stashed changes
   database: "flight_tracking",
 });
 
@@ -349,14 +345,11 @@ app.get("/people_in_the_ground", (req, res) => {
 
 app.get("/route_summary", (req, res) => {
   const query = "select * from route_summary";
-
   db.query(query, (error, data) => {
     if (error)
       return res.status(500).json({ message: "Route summary failure" });
-    res.status(200).json({ message: "Route summary success" });
 
     let result = [];
-
     for (let i = 0; i < data.length; i++) {
       result.push([
         data[i].route,
@@ -368,8 +361,7 @@ app.get("/route_summary", (req, res) => {
         data[i].airport_sequence,
       ]);
     }
-
-    return result;
+    res.status(200).json({ result });
   });
 });
 
@@ -379,7 +371,6 @@ app.get("/alternative_airports", (req, res) => {
   db.query(query, (error, data) => {
     if (error)
       return res.status(500).json({ message: "Alternative airports failure" });
-    res.status(200).json({ message: "Alternative airports success" });
 
     let result = [];
 
@@ -394,7 +385,108 @@ app.get("/alternative_airports", (req, res) => {
       ]);
     }
 
-    return result;
+    res.status(200).json({ result });
+  });
+});
+
+app.post("/add_person", (req, res) => {
+  const sanitize = {
+    str: (v) => (typeof v === "string" ? v.trim().replace(/^['"]+|['"]+$/g, "") : null),
+    num: (v) => (isNaN(parseInt(v)) ? null : parseInt(v)),
+  };
+  const { personID, first_name, last_name, locationID, taxID, experience, miles, funds } = req.body;
+  const values = [
+    sanitize.str(personID),
+    sanitize.str(first_name),
+    sanitize.str(last_name),
+    sanitize.str(locationID),
+    sanitize.str(taxID),
+    sanitize.num(experience),
+    sanitize.num(miles),
+    sanitize.num(funds),
+  ];
+  if (values.includes(null)) {
+    return res.status(400).json({ error: "Missing or invalid required fields" });
+  }
+  db.query("CALL add_person(?, ?, ?, ?, ?, ?, ?, ?)", values, (err) => {
+    if (err) {
+      console.error("DB error:", err);
+      return res.status(500).json({ error: "Failed to add person" });
+    }
+    res.status(200).json({ message: "Person added successfully" });
+  });
+});
+
+app.post("/flight_landing", (req, res) => {
+  const { flightID } = req.body;
+  if (!flightID) return res.status(400).json({ error: "Missing flightID" });
+  db.query("CALL flight_landing(?)", [flightID], (err) => {
+    if (err) {
+      console.error("DB error:", err);
+      return res.status(500).json({ error: "Failed to land flight" });
+    }
+    res.status(200).json({ message: "Flight landed successfully" });
+  });
+});
+
+app.post("/flight_takeoff", (req, res) => {
+  const { flightID } = req.body;
+  if (!flightID) return res.status(400).json({ error: "Missing flightID" });
+  db.query("CALL flight_takeoff(?)", [flightID], (err) => {
+    if (err) {
+      console.error("DB error:", err);
+      return res.status(500).json({ error: "Failed to takeoff flight" });
+    }
+    res.status(200).json({ message: "Flight took off successfully" });
+  });
+});
+
+app.post("/passengers_board", (req, res) => {
+  const { flightID } = req.body;
+  if (!flightID) return res.status(400).json({ error: "Missing flightID" });
+  db.query("CALL passengers_board(?)", [flightID], (err) => {
+    if (err) {
+      console.error("DB error:", err);
+      return res.status(500).json({ error: "Failed to board passengers" });
+    }
+    res.status(200).json({ message: "Passengers boarded successfully" });
+  });
+});
+
+app.post("/passengers_disembark", (req, res) => {
+  const { flightID } = req.body;
+  if (!flightID) return res.status(400).json({ error: "Missing flightID" });
+  db.query("CALL passengers_disembark(?)", [flightID], (err) => {
+    if (err) {
+      console.error("DB error:", err);
+      return res.status(500).json({ error: "Failed to disembark passengers" });
+    }
+    res.status(200).json({ message: "Passengers disembarked successfully" });
+  });
+});
+
+app.get("/people_on_the_ground", (req, res) => {
+  const query = "select * from people_on_the_ground";
+  db.query(query, (error, data) => {
+    if (error)
+      return res.status(500).json({ message: "People in the ground failure" });
+
+    let result = [];
+    for (let i = 0; i < data.length; i++) {
+      result.push([
+        data[i].departing_from,
+        data[i].Airport,
+        data[i].airport_name,
+        data[i].city,
+        data[i].state,
+        data[i].country,
+        data[i].num_pilots,
+        data[i].num_passengers,
+        data[i].joint_pilots_passengers,
+        data[i].person_list,
+      ]);
+    }
+    res.status(200).json({ result });
   });
 });
 

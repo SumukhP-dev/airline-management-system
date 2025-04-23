@@ -22,9 +22,6 @@ function NavigationRow() {
                     <li className = "nav-item">
                         <Link className= "nav-link" to = "/offer-flight"> Offer Flight</Link>
                     </li>
-                    <li className = "nav-item">
-                        <Link className= "nav-link" to = "/flights-in-air"> Flights in Air</Link>
-                    </li>
                     {/* add functions as you go */}
 
                     <li className = "nav-item">
@@ -38,6 +35,21 @@ function NavigationRow() {
                     </li>
                     <li className = "nav-item">
                         <Link className= "nav-link" to = "/flights_on_the_ground"> Flights on the Ground</Link>
+                    </li>
+                    <li className = "nav-item">
+                        <Link className= "nav-link" to = "/passengers_board"> Passengers Board</Link>
+                    </li>
+                    <li className = "nav-item">
+                        <Link className= "nav-link" to = "/passengers_disembark"> Passengers Disembark</Link>
+                    </li>
+                    <li className = "nav-item">
+                        <Link className= "nav-link" to = "/route_summary"> Route Summary</Link>
+                    </li>
+                    <li className = "nav-item">
+                        <Link className= "nav-link" to = "/alternative_airports"> Alternative Airports</Link>
+                    </li>
+                    <li className = "nav-item">
+                        <Link className= "nav-link" to = "/people_on_the_ground"> People on the Ground</Link>
                     </li>
                 </ul>
             </div>
